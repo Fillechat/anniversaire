@@ -99,16 +99,55 @@
             } else if (question.textContent === "COMMENT ÇA OUI ? TU VEUX LA BAGARRE ?") {
                 gif.src = "https://media1.tenor.com/m/o_5RQarGvJ0AAAAC/kiss.gif";
                 question.textContent = "OK BAGAR DE BISOUUUUUSS";
-            } else {
-                question.innerHTML = "JOYEUX ANNIVERSAIRE BIBOUUUUU !!!";
-                gif.src = "https://media.giphy.com/media/UMon0fuimoAN9ueUNP/giphy.gif";
-                noBtn.style.display = "block"; // Afficher à nouveau le bouton "Non"
-            }
-
-            // Masquer le bouton "Oui" et "Non" lorsque le message est "OK BAGAR DE BISOUUUUUSS"
-            if (question.textContent === "OK BAGAR DE BISOUUUUUSS") {
-                yesBtn.style.display = "none";
-                noBtn.style.display = "none";
+            } else if (question.textContent === "OK BAGAR DE BISOUUUUUSS") {
+                question.textContent = "Entrez le mot de passe :";
+                const passwordInput = document.createElement("input");
+                passwordInput.setAttribute("type", "password");
+                passwordInput.setAttribute("id", "password");
+                const submitButton = document.createElement("button");
+                submitButton.textContent = "Valider";
+                submitButton.addEventListener("click", () => {
+                    const password = document.getElementById("password").value;
+                    if (password === "jesuisungrosbébé") {
+                        wrapper.innerHTML = ""; // Effacer le contenu actuel
+                        const gifPage = document.createElement("div");
+                        gifPage.innerHTML = `
+                            <p>Voici votre cadeau :</p>
+                            <img class="gif" src="https://media.giphy.com/media/3o85xJLO9xhbN5nYfu/giphy.gif" alt="GIF">
+                            <div class="btn-group">
+                                <button class="cadeau-btn">Cadeau 1</button>
+                                <button class="cadeau-btn">Cadeau 2</button>
+                                <button class="cadeau-btn">Cadeau 3</button>
+                                <button class="cadeau-btn">Cadeau 4</button>
+                                <button class="cadeau-btn">Cadeau 5</button>
+                            </div>
+                        `;
+                        wrapper.appendChild(gifPage);
+                        const cadeauBtns = document.querySelectorAll(".cadeau-btn");
+                        cadeauBtns.forEach(btn => {
+                            btn.addEventListener("click", () => {
+                                gifPage.innerHTML += "<p>Indice : glouglou</p>";
+                                const retourBtn = document.createElement("button");
+                                retourBtn.textContent = "Retour aux autres cadeaux";
+                                retourBtn.addEventListener("click", () => {
+                                    wrapper.innerHTML = ""; // Effacer le contenu actuel
+                                    wrapper.appendChild(question);
+                                    wrapper.appendChild(gif);
+                                    const btnGroup = document.createElement("div");
+                                    btnGroup.classList.add("btn-group");
+                                    btnGroup.appendChild(yesBtn);
+                                    btnGroup.appendChild(noBtn);
+                                    wrapper.appendChild(btnGroup);
+                                });
+                                gifPage.appendChild(retourBtn);
+                            });
+                        });
+                    } else {
+                        alert("Mot de passe incorrect !");
+                    }
+                });
+                wrapper.appendChild(passwordInput);
+                wrapper.appendChild(submitButton);
             }
         });
 
