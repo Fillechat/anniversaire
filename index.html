@@ -43,10 +43,10 @@
             display: flex;
             justify-content: center;
             margin-top: 50px;
+            position: relative; /* Ajout de la position relative */
         }
 
         button {
-            position: absolute;
             width: 150px;
             height: inherit;
             color: white;
@@ -59,15 +59,58 @@
             font-size: 1.2em;
         }
 
-        button:nth-child(1) {
-            margin-left: -200px;
+        button:nth-child(1),
+        button:nth-child(2),
+        button:nth-child(3), 
+        button:nth-child(4) { 
+            margin-left: 20px;
+            margin-right: 20px;
             background: #e94d58;
         }
 
-        button:nth-child(2) {
-            margin-right: -200px;
-            background: white;
+        #password-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        #password-input {
+            margin-top: 10px;
+            width: 200px;
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            font-size: 1em;
+        }
+
+        #password-message {
+            margin-top: 10px;
             color: #e94d58;
+        }
+
+        .gift-buttons {
+            display: none;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .big-gif {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .big-gif img {
+            max-width: 80%;
+            max-height: 80%;
         }
     </style>
 </head>
@@ -79,6 +122,22 @@
             <button class="yes-btn">Oui</button>
             <button class="no-btn">Non</button>
         </div>
+        <div id="password-container">
+            <label for="password-input">Mot de passe :</label><br>
+            <input type="text" id="password-input"><br>
+            <p id="password-message"></p> <!-- Ajout du paragraphe pour afficher l'indice -->
+        </div>
+        <div class="gift-buttons">
+            <button class="gift-btn" style="margin-left: 0;">Cadeau 1</button>
+            <button class="gift-btn">Cadeau 2</button>
+            <button class="gift-btn">Cadeau 3</button>
+            <button class="gift-btn" style="margin-right: 0;">Cadeau 4</button>
+        </div>
+    </div>
+
+    <!-- Balise pour afficher le GIF géant -->
+    <div class="big-gif">
+        <img src="" alt="GIF GÉANT">
     </div>
 
     <script>
@@ -87,79 +146,122 @@
         const gif = document.querySelector(".gif");
         const yesBtn = document.querySelector(".yes-btn");
         const noBtn = document.querySelector(".no-btn");
+        const passwordContainer = document.getElementById("password-container");
+        const passwordInput = document.getElementById("password-input");
+        const passwordMessage = document.getElementById("password-message");
+        const giftButtons = document.querySelector(".gift-buttons");
+        const bigGif = document.querySelector(".big-gif");
+        const bigGifImg = bigGif.querySelector("img");
 
         let clickCount = 0; // Variable pour compter les clics sur le bouton "Oui"
 
         yesBtn.addEventListener("click", () => {
             if (question.textContent === "JOYEUX ANNIVERSAIRE BIBOUUUUU !!!") {
                 question.textContent = "JE T'AIME FORT FORTTTTTT";
-                noBtn.style.display = "none"; // Cacher le bouton "Non"
+                noBtn.disabled = true; // Désactiver le bouton "Non"
+                noBtn.style.display = "none"; // Masquer le bouton "Non"
             } else if (question.textContent === "JE T'AIME FORT FORTTTTTT") {
-                question.textContent = "COMMENT ÇA OUI ? TU VEUX LA BAGARRE ?";
-            } else if (question.textContent === "COMMENT ÇA OUI ? TU VEUX LA BAGARRE ?") {
-                gif.src = "https://media1.tenor.com/m/o_5RQarGvJ0AAAAC/kiss.gif";
+                question.textContent = "COMMENT ÇA TU VEUX CLIQUER SUR NON ? TU VEUX LA BAGARRE ?";
+                gif.src = "https://64.media.tumblr.com/7af9a4d122ee20bc35b20ddb4a291409/tumblr_mf76oqJKFC1rkn9bro1_400.gif";
+                noBtn.style.display = "none"; // Masquer le bouton "Non" pour cette page
+            } else if (question.textContent === "COMMENT ÇA TU VEUX CLIQUER SUR NON ? TU VEUX LA BAGARRE ?") {
+                gif.src = "https://media1.tenor.com/m/o_5RQarGvJ0AAAAC/kiss.gif"; // URL du nouveau GIF
                 question.textContent = "OK BAGAR DE BISOUUUUUSS";
-            } else if (question.textContent === "OK BAGAR DE BISOUUUUUSS") {
-                const passwordInput = document.createElement("input");
-                passwordInput.setAttribute("type", "password");
-                passwordInput.setAttribute("id", "password");
-                const submitButton = document.createElement("button");
-                submitButton.textContent = "Valider";
-                submitButton.addEventListener("click", () => {
-                    const password = document.getElementById("password").value;
-                    if (password === "jesuisungrosbébé") {
-                        wrapper.innerHTML = ""; // Effacer le contenu actuel
-                        const gifPage = document.createElement("div");
-                        gifPage.innerHTML = `
-                            <p>Voici votre cadeau :</p>
-                            <img class="gif" src="https://media.giphy.com/media/3o85xJLO9xhbN5nYfu/giphy.gif" alt="GIF">
-                            <div class="btn-group">
-                                <button class="cadeau-btn">Cadeau 1</button>
-                                <button class="cadeau-btn">Cadeau 2</button>
-                                <button class="cadeau-btn">Cadeau 3</button>
-                                <button class="cadeau-btn">Cadeau 4</button>
-                                <button class="cadeau-btn">Cadeau 5</button>
-                            </div>
-                        `;
-                        wrapper.appendChild(gifPage);
-                        const cadeauBtns = document.querySelectorAll(".cadeau-btn");
-                        cadeauBtns.forEach(btn => {
-                            btn.addEventListener("click", () => {
-                                gifPage.innerHTML += "<p>Indice : glouglou</p>";
-                                const retourBtn = document.createElement("button");
-                                retourBtn.textContent = "Retour aux autres cadeaux";
-                                retourBtn.addEventListener("click", () => {
-                                    wrapper.innerHTML = ""; // Effacer le contenu actuel
-                                    wrapper.appendChild(question);
-                                    wrapper.appendChild(gif);
-                                    const btnGroup = document.createElement("div");
-                                    btnGroup.classList.add("btn-group");
-                                    btnGroup.appendChild(yesBtn);
-                                    btnGroup.appendChild(noBtn);
-                                    wrapper.appendChild(btnGroup);
-                                });
-                                gifPage.appendChild(retourBtn);
-                            });
-                        });
-                    } else {
-                        alert("Mot de passe incorrect !");
-                    }
-                });
-                wrapper.appendChild(passwordInput);
-                wrapper.appendChild(submitButton);
+                passwordContainer.style.display = "block"; // Afficher le bloc du mot de passe
+            } else {
+                question.innerHTML = "JOYEUX ANNIVERSAIRE BIBOUUUUU !!!";
+                gif.src = "https://media.giphy.com/media/UMon0fuimoAN9ueUNP/giphy.gif";
+                noBtn.disabled = false; // Réactiver le bouton "Non"
+                passwordContainer.style.display = "none"; // Cacher le bloc du mot de passe
+                noBtn.style.display = "inline-block"; // Réafficher le bouton "Non" pour les autres pages
+            }
+
+            // Masquer le bouton "Non" lorsque le message est "COMMENT ÇA OUI ? TU VEUX LA BAGARRE ?" ou "OK BAGAR DE BISOUUUUUSS"
+            if (question.textContent === "COMMENT ÇA TU VEUX CLIQUER SUR NON ? TU VEUX LA BAGARRE ?" || question.textContent === "OK BAGAR DE BISOUUUUUSS" || question.textContent === "JE T'AIME FORT FORTTTTTT") {
+                noBtn.style.display = "none";
+            } else {
+                noBtn.style.display = "inline-block"; // Réafficher le bouton "Non" dans les autres cas
+            }
+
+            // Masquer le bouton "Oui" lorsque le message est "OK BAGAR DE BISOUUUUUSS"
+            if (question.textContent === "OK BAGAR DE BISOUUUUUSS") {
+                yesBtn.style.display = "none";
+            } else {
+                yesBtn.style.display = "inline-block"; // Réafficher le bouton "Oui" dans les autres cas
             }
         });
 
         noBtn.addEventListener("mouseover", () => {
-            const maxX = window.innerWidth - noBtn.offsetWidth;
-            const maxY = window.innerHeight - noBtn.offsetHeight;
+            if (noBtn.disabled === false) {
+                const maxX = window.innerWidth - noBtn.offsetWidth;
+                const maxY = window.innerHeight - noBtn.offsetHeight;
 
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
+                const randomX = Math.floor(Math.random() * maxX);
+                const randomY = Math.floor(Math.random() * maxY);
 
-            noBtn.style.left = randomX + "px";
-            noBtn.style.top = randomY + "px";
+                noBtn.style.position = "absolute"; // Ajout de la position absolue
+                noBtn.style.left = randomX + "px";
+                noBtn.style.top = randomY + "px";
+
+                // Réinitialiser la position après un délai
+                setTimeout(() => {
+                    noBtn.style.position = "static";
+                }, 1000); // 1000 millisecondes = 1 seconde
+            }
         });
+
+        // Événement lorsque l'utilisateur tape quelque chose dans le champ de mot de passe
+        passwordInput.addEventListener("input", () => {
+            const password = passwordInput.value;
+            if (password === "jesuisungrosbébé") {
+                passwordMessage.textContent = "Indice : je suis un....."; // Afficher l'indice
+                // Afficher les boutons de cadeau
+                giftButtons.style.display = "flex";
+            } else {
+                passwordMessage.textContent = "Indice : je suis un....."; // Afficher l'indice si le mot de passe est incorrect
+                // Cacher les boutons de cadeau s'il y a du texte dans le champ de mot de passe
+                giftButtons.style.display = "none";
+            }
+        });
+
+        const giftBtn1 = document.querySelector(".gift-btn:nth-child(1)"); // Sélection du bouton "Cadeau 1"
+        const giftBtn2 = document.querySelector(".gift-btn:nth-child(2)"); // Sélection du bouton "Cadeau 2"
+        const giftBtn3 = document.querySelector(".gift-btn:nth-child(3)"); // Sélection du bouton "Cadeau 3"
+        const giftBtn4 = document.querySelector(".gift-btn:nth-child(4)"); // Sélection du bouton "Cadeau 4"
+
+        let cadeauxClicked = 0; // Variable pour compter les clics sur les boutons cadeaux
+
+        giftBtn1.addEventListener("click", () => {
+            passwordMessage.textContent = "Indice : GlouGlouGllOouu"; // Changement du texte de l'indice
+            passwordMessage.style.color = "blue"; // Changement de la couleur du texte en bleu
+            cadeauxClicked++;
+            showBigGifIfAllClicked();
+        });
+
+        giftBtn2.addEventListener("click", () => {
+            passwordMessage.textContent = "Indice : Une créature mystique"; // Changement du texte de l'indice
+            cadeauxClicked++;
+            showBigGifIfAllClicked();
+        });
+
+        giftBtn3.addEventListener("click", () => {
+            passwordMessage.textContent = "Indice : aie..aiie mauvais choix"; // Changement du texte de l'indice
+            cadeauxClicked++;
+            showBigGifIfAllClicked();
+        });
+
+        giftBtn4.addEventListener("click", () => {
+            passwordMessage.textContent = "Indice : TNT"; // Changement du texte de l'indice
+            cadeauxClicked++;
+            showBigGifIfAllClicked();
+        });
+
+        function showBigGifIfAllClicked() {
+            if (cadeauxClicked === 4) {
+                bigGif.style.display = "flex"; // Afficher le GIF géant
+                bigGifImg.src = "https://media1.tenor.com/m/2Emlozpbla0AAAAC/cat-explode.gif"; // URL du GIF géant
+            }
+        }
     </script>
 </body>
 </html>
